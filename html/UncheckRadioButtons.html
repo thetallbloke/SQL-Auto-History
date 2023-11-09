@@ -1,0 +1,34 @@
+<html>
+<head>
+    <title>Unchecking Radio Buttons</title>
+    <script type="text/javascript">
+        var lastButtonChecked = -1;
+        /* toggle(radiobutton)
+         * Allows a user to "uncheck" a radio button
+         * that is currently checked.
+         */
+        function toggle(radiobutton) {
+            if (lastButtonChecked == radiobutton.value) {
+                radiobutton.checked = false;
+                lastButtonChecked = -1;
+            } else {
+                lastButtonChecked = radiobutton.value;
+            }
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <tr><td>Value 1.</td> <td><input type='radio' value='01' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 2.</td> <td><input type='radio' value='02' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 3.</td> <td><input type='radio' value='03' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 4.</td> <td><input type='radio' value='04' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 5.</td> <td><input type='radio' value='05' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 6.</td> <td><input type='radio' value='06' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 7.</td> <td><input type='radio' value='07' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 8.</td> <td><input type='radio' value='08' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 9.</td> <td><input type='radio' value='09' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+        <tr><td>Value 10.</td><td><input type='radio' value='10' id='radOptions' name='radOptions' onclick="toggle(this)"></td></tr>
+    </table>
+</body>
+</html>
