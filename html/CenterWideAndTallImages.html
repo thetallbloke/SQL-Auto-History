@@ -3,37 +3,60 @@
 <head>
     <title>Centre Wide and Tall Images</title>
     <style type="text/css">
+        .outer { border: 1px solid #888; width: 200px; height: 200px; }
+        .inner { display: table-cell; height: 200px; width: 200px; vertical-align: middle; }
         img { max-width: 100%; max-height: 100%; display: block; margin: auto auto; }
-        .outer { border: 1px solid #888; width: 100px; height: 100px; }
-        .inner { display: table-cell; height: 100px; width: 100px; vertical-align: middle; }
     </style>
 
-    <!--Work in progress.  Working to add a slide to show that the image is centered correctly-->
-    <!--<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>-->
-    <!--
-        <link rel="stylesheet" href="CenterWideAndTallImages/controls.css" />
-    -->
-    <!--<script src="CenterWideAndTallImages/controls.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="CenterWideAndTallImages/controls.css" />
+    <script src="CenterWideAndTallImages/controls.js"></script>
 
 </head>
 <body>
-    <div class="outer">
-        <div class="inner">
-            <img src="http://1.bp.blogspot.com/_74so2YIdYpM/TEd09Hqrm6I/AAAAAAAAApY/rwGCm5_Tawg/s320/tall+copy.jpg" alt="tall image" />
-        </div>
+    <div class="slidecontainer">
+        <label for="WidthRange">Width</label>
+        <input type="range" min="100" max="500" value="200" class="slider" id="WidthRange" /><input type="text" id="txtWidth" value="100" />
+    </div>
+    <div class="slidecontainer">
+        <label for="WidthRange">Height</label>
+        <input type="range" min="100" max="500" value="200" class="slider" id="HeightRange" /><input type="text" id="txtHeight" value="100" />
     </div>
     <hr />
-    <div class="outer">
-        <div class="inner">
-            <img src="http://www.5150studios.com.au/wp-content/uploads/2012/04/wide.jpg" alt="wide image" />
+
+    <div class="itemContainer">
+        <div class="outer res">
+            <div class="inner res">
+                <img src="http://1.bp.blogspot.com/_74so2YIdYpM/TEd09Hqrm6I/AAAAAAAAApY/rwGCm5_Tawg/s320/tall+copy.jpg" alt="tall image" />
+            </div>
         </div>
     </div>
-
-    <!--
-    <div class="slidecontainer">
-        <input type="range" min="1" max="500" value="100" class="slider" id="myRange" />
+    <div class="itemContainer">
+        <div class="outer res">
+            <div class="inner res">
+                <img src="http://www.5150studios.com.au/wp-content/uploads/2012/04/wide.jpg" alt="wide image" />
+            </div>
+        </div>
     </div>
-    <input type="text" id="demo" />
-    -->
+    <div class="itemContainer codeContainer">
+        <label for="preHTML">Required CSS</label>
+        <pre id="preHTML">
+&lt;style type="text/css"&gt;
+    .outer { border: 1px solid #888; width: 200px; height: 200px; }
+    .inner { display: table-cell; height: 200px; width: 200px; vertical-align: middle; }
+    img { max-width: 100%; max-height: 100%; display: block; margin: auto auto; }
+&lt;/style&gt;
+        </pre>
+        <hr />
+        <label for="preHTML">Required HTML</label>
+        <pre id="preHTML">
+&lt;div class="outer"&gt;
+    &lt;div class="inner"&gt;
+        &lt;img src="--insert your image url--" alt="wide image" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        </pre>
+    </div>
+
 </body>
 </html>
