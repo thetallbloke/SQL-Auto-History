@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
     <title>Centre Wide and Tall Images</title>
     <style type="text/css">
@@ -15,11 +15,11 @@
 </head>
 <body>
     <div class="slidecontainer">
-        <label for="WidthRange">Width</label>
+        <label class="toggleLabel" for="WidthRange">Width</label>
         <input type="range" min="100" max="500" value="200" class="slider" id="WidthRange" /><input type="text" id="txtWidth" value="100" />
     </div>
     <div class="slidecontainer">
-        <label for="WidthRange">Height</label>
+        <label class="toggleLabel" for="WidthRange">Height</label>
         <input type="range" min="100" max="500" value="200" class="slider" id="HeightRange" /><input type="text" id="txtHeight" value="100" />
     </div>
     <hr />
@@ -38,25 +38,21 @@
             </div>
         </div>
     </div>
-    <div class="itemContainer codeContainer">
-        <label for="preHTML">Required CSS</label>
-        <pre id="preHTML">
-&lt;style type="text/css"&gt;
+    <hr />
+    <div class="itemContainerc codeContainer code">
+        <label for="preCSS" class="code codeHeader">Required CSS</label>
+        <div class="code-block">&lt;style type="text/css"&gt;
     .outer { border: 1px solid #888; width: 200px; height: 200px; }
     .inner { display: table-cell; height: 200px; width: 200px; vertical-align: middle; }
     img { max-width: 100%; max-height: 100%; display: block; margin: auto auto; }
-&lt;/style&gt;
-        </pre>
-        <hr />
-        <label for="preHTML">Required HTML</label>
-        <pre id="preHTML">
-&lt;div class="outer"&gt;
+&lt;/style&gt;</div>
+
+            <label for="preHTML">Required HTML</label>
+            <div class="code-block">&lt;div class="outer"&gt;
     &lt;div class="inner"&gt;
         &lt;img src="--insert your image url--" alt="wide image" /&gt;
     &lt;/div&gt;
-&lt;/div&gt;
-        </pre>
-    </div>
-
+&lt;/div&gt;</div>
+            </div>
 </body>
 </html>

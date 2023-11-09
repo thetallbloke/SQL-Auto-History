@@ -1,3 +1,7 @@
+/*
+    This is a helper file to simply allow the sliders to work.
+    It is not necessary to use this file for anythis other than to make the sliders work for the exmamples on the page.
+*/
 $(function () {
     var wSlider = document.getElementById("WidthRange");
     var hSlider = document.getElementById("HeightRange");
@@ -17,5 +21,4 @@ $(function () {
         txtWOutput.value = `${this.value}px`;
         $('.res').css('height', this.value);
     }
-
 })
