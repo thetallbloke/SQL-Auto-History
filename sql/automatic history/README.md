@@ -15,3 +15,4 @@ There are some things to take into consideration that we need a solution for... 
 4. What happens when a field is renamed
 5. What happens when a field is changed from one type to another
 6. Indexing of the history table and optimisation of the SPROCS
+7. What happens if there are multiple WHERE clauses that are required?  This may not be an issue.
