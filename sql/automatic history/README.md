@@ -16,3 +16,6 @@ There are some things to take into consideration that we need a solution for... 
 5. What happens when a field is changed from one type to another
 6. Indexing of the history table and optimisation of the SPROCS
 7. What happens if there are multiple WHERE clauses that are required?  This may not be an issue.
+
+## Why not do this in the application?
+We want to take the responsibility from the developer and put it into the database.  If it were left in the application, the developer may forget to update the history table, or maybe there will be inconsistencies between the different devs.  Doing it this way will ensure that the history table is always up to date in a consistent manner.
