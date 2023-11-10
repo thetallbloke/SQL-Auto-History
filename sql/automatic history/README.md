@@ -19,3 +19,6 @@ There are some things to take into consideration that we need a solution for... 
 
 ## Why not do this in the application?
 We want to take the responsibility from the developer and put it into the database.  If it were left in the application, the developer may forget to update the history table, or maybe there will be inconsistencies between the different devs.  Doing it this way will ensure that the history table is always up to date in a consistent manner.
+
+## Complimentary database View of the data too?
+I'm still deciding if we also need a view of the data that joins the two tables.  This might be a requirement for the application to use specifically when listing out the changes for a specific record.  This would be a simple join on the two tables and would be a read only view.
