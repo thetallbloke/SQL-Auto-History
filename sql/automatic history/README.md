@@ -36,3 +36,7 @@ I'm still deciding if we also need a view of the data that joins the two tables.
 
 ## Now what?
 We'd like feedback on this solution.  Will it work? Suggestions to make it better? Other considerations?
+
+## STILL TO DO
+* test/modify the script to keep the table schema in sync
+* create a script to create the history tables based on the base table for the tables in the sysAutoHistoryTables table
