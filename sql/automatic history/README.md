@@ -10,8 +10,12 @@ We have a couple of use cases to solve:
 
 1. Main table - ```<Table Name>``` - Student
 2. History table - ```<Table Name>History``` - StudentHistory
-3. Trigger to copy all changes from Main table to History table
+3. Trigger to copy all changes from Main table to History table	
+3.1. Option 1 - copy existing data from base table to history table and then update the DateModified field to the current date and time
+3.2. Option 2 - update the DateModified field to the current date and time and then copy the data from the base table to the history table
 4. Stored Procedure to pull out the data at a point in time for all records or a specific record based on key or ID, etc.
+4.1. Option 1 - pull out the data from the history table and then join to the base table to get the data based on the ID or the date value passed in
+4.2. Option 2 - pull out the data from the history table to get the data based on the ID or the date value passed in
 
 ## Considerations
 Here are some things to take into consideration given this proposed solution... maybe
