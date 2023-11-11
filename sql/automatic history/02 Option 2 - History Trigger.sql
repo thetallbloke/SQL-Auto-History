@@ -2,11 +2,12 @@
     Option 2:
         Create a trigger to automatically insert into StudentHistory when a new row is inserted.
         This essentailly copies the new row into the history table while also keeping the DateModified value up to date.
+        Option 2 needs to run on INSERT and UPDATE because otherwise the first record inserted will not have a DateModified value or be copied to the history table.
 */
 
 CREATE TRIGGER trg_Student_Update
 ON dbo.Student
-AFTER UPDATE
+AFTER INSERT, UPDATE
 AS
 BEGIN
     SET NOCOUNT ON;

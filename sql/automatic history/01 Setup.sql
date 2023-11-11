@@ -54,6 +54,13 @@ CREATE TABLE [dbo].[sysAutoHistoryTables](
 GO
 
 /*
+    We will add a record for the Student table that will be created shortly.
+*/
+INSERT INTO sysAutoHistoryTables (BaseTableSchemaName, BaseTableName, Active)
+VALUES ('dbo', 'Student', 1)
+
+
+/*
     Create a trigger to automatically update the HistoryTableName field when a new row is inserted.
 */
 IF EXISTS (SELECT 1 FROM sys.triggers WHERE name = 'trg_sysAutoHistoryTables_AfterInsert')
@@ -102,7 +109,11 @@ CREATE INDEX IX_Student_DateModified ON dbo.Student (DateModified);
 
 GO
 
-/*  POC history table StudentHistory  */
+/*
+    POC history table StudentHistory  
+    Here is the script to generate the table manually, but we will use the automatic history trigger to create it.
+*/
+/*
 CREATE TABLE [audit].[StudentHistory](
 	[id] [numeric](18, 0) NOT NULL,
 	[FirstName] [varchar](50) NULL,
@@ -120,3 +131,4 @@ FOREIGN KEY (Id) REFERENCES dbo.Student(Id);
 CREATE INDEX IX_StudentHistory_Id ON [audit].StudentHistory (Id);
 CREATE INDEX IX_StudentHistory_DateModified ON [audit].StudentHistory (DateModified);
 GO
+*/
