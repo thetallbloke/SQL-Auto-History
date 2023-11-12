@@ -17,8 +17,7 @@ BEGIN
             FavouriteColour,
             Active,
             DateModified
-        FROM
-            dbo.Student
+        FROM dbo.Student
         UNION ALL
         SELECT
             'StudentHistory' AS SourceTable,
@@ -28,8 +27,7 @@ BEGIN
             FavouriteColour,
             Active,
             DateModified
-        FROM
-            dbo.StudentHistory
+        FROM dbo.StudentHistory
     )
     SELECT
         SourceTable,
@@ -50,10 +48,9 @@ BEGIN
                 Active,
                 DateModified,
                 ROW_NUMBER() OVER (PARTITION BY id ORDER BY DateModified DESC) AS RowNum
-            FROM
-                CombinedData
-            WHERE
-                (@Id IS NULL OR id = @Id) AND DateModified <= @GivenDate
+            FROM CombinedData
+            WHERE (@Id IS NULL OR id = @Id)
+              AND DateModified <= @GivenDate
         ) AS RankedData
     WHERE
         RowNum = 1;
