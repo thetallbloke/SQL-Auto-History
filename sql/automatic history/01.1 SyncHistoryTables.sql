@@ -1,13 +1,14 @@
 /*
-    This SPROC seems to work as expected.
-    It hasn't been tested with every datatype yet, but it seems to work
-
-    * Need to add code to check for a DateModified field and add if necessary.
-    * 
 
     The basic premise of the script is to loop through the sysAutoHistoryTables table and check if the matching history table infrastructure (fields, triggers, etc) exist.
     The script would be executed after a deployment to make sure the history tables are up to date.  It wouldn't be executed on a timer or other schedule
     as it would be expected that the history tables exist and that the audit system is working correctly.
+
+    This SPROC seems to work as expected.
+    It hasn't been tested with every datatype yet, but it seems to work
+
+    * Need to add code to check for a DateModified field and add if necessary.
+
 */
 
 CREATE OR ALTER PROCEDURE SyncHistoryTables
@@ -24,7 +25,7 @@ BEGIN
     DECLARE @DataType NVARCHAR(255);
 	DECLARE @MaxLength INT;
     DECLARE @IsNullable VARCHAR(5);
-	DECLARE @strSQL VARCHAR(max);
+	DECLARE @strSQL NVARCHAR(max);
 
     DECLARE table_cursor CURSOR FOR
     SELECT
@@ -48,9 +49,24 @@ BEGIN
         -- The base table must exists already anyway, so we can check it directly.
         IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @BaseTableSchemaName AND TABLE_NAME = @BaseTableName AND COLUMN_NAME = @DateModifiedColumn)
         BEGIN
-            -- If DateModified column doesn't exist, create the column
-            SET @strSQL = 'ALTER TABLE ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' ADD ' + QUOTENAME(@DateModifiedColumn) + ' DATETIME';
-                
+            -- If DateModified column doesn't exist, create the column with the default of GETDATE()
+            SET @strSQL = 'ALTER TABLE ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' ADD ' + QUOTENAME(@DateModifiedColumn) + ' DATETIME NULL DEFAULT(GETDATE());';
+            PRINT (@strSQL);
+            EXEC sp_executesql @strSQL;
+
+            -- Update the DateModified column with the current date if it is added just above.  We need to do this in order to set it to be NOT NULL in the next step.
+            SET @strSQL = 'UPDATE ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' SET ' + QUOTENAME(@DateModifiedColumn) + ' = GETDATE();';
+            PRINT (@strSQL);
+            EXEC sp_executesql @strSQL;
+
+            -- Alter the column to be NOT NULL for all future inserts.
+            SET @strSQL = 'ALTER TABLE ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' ALTER COLUMN ' + QUOTENAME(@DateModifiedColumn) + ' DATETIME NOT NULL;';
+            PRINT (@strSQL);
+            EXEC sp_executesql @strSQL;
+
+            -- Add index on the DateModified column
+            SET @strSQL = 'CREATE NONCLUSTERED INDEX [IX_' + @BaseTableName + '_' + @DateModifiedColumn + '] ON ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' (' + QUOTENAME(@DateModifiedColumn) + ' ASC);';
+            
             PRINT (@strSQL);
             EXEC sp_executesql @strSQL;
         END
@@ -62,9 +78,9 @@ BEGIN
 
             -- Create history table if it doesn't exist.  Using the UNION ALL stops IDENTITY attributes of columns being created.  For the history tables, we don't want the IDENTITY attribute because
             -- it stops us from inserting rows into the history table because the IDENTITY column is likely to be the primary key and we need duplicates in this field in order to match the base table.
-			SET @strSQL = 'SELECT * INTO ' + QUOTENAME(@HistorySchemaName) + '.' + QUOTENAME(@HistoryTableName) + ' FROM ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' WHERE 1 = 0
-                           UNION ALL
-                           SELECT * FROM ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' WHERE 1 = 0;';
+			SET @strSQL = 'SELECT * INTO ' + QUOTENAME(@HistorySchemaName) + '.' + QUOTENAME(@HistoryTableName) + ' FROM ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' WHERE 1 = 0 ' +
+                          'UNION ALL ' + 
+                          'SELECT * FROM ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' WHERE 1 = 0;';
             
             PRINT (@strSQL);
 			EXEC(@strSQL);

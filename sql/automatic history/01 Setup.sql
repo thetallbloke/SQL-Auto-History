@@ -46,6 +46,7 @@ CREATE TABLE [dbo].[sysAutoHistoryTables](
     [HistorySchemaName] [varchar](255) NOT NULL DEFAULT('audit'),
 	[HistoryTableName] [varchar](255) NULL,
     [DateModifiedColumn] [varchar](255) NOT NULL DEFAULT('DateModified'),
+    [PrimaryKeyColumn] [varchar](255) NOT NULL DEFAULT('Id'),
 	[Active] [bit] NULL DEFAULT(1)
  CONSTRAINT [PK_sysAutoHistoryTables] PRIMARY KEY CLUSTERED 
 (
@@ -53,12 +54,6 @@ CREATE TABLE [dbo].[sysAutoHistoryTables](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
-/*
-    Here we add a record for the Student table that will be created shortly.
-    This is the POC table that we will be using during the demo.
-*/
-INSERT INTO sysAutoHistoryTables (BaseTableSchemaName, BaseTableName, Active) VALUES ('dbo', 'Student', 1)
 
 /*
     Create a trigger to automatically update the HistoryTableName field when a new row is inserted.
@@ -86,6 +81,13 @@ BEGIN
 END;
 GO
 
+/*
+    Here we add a record for the Student table that will be created shortly.
+    This is the POC table that we will be using during the demo.
+*/
+INSERT INTO sysAutoHistoryTables (BaseTableSchemaName, BaseTableName, Active) VALUES ('dbo', 'Student', 1)
+
+
 /*  POC base table Student */
 CREATE TABLE [dbo].[Student](
 	[id] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
@@ -93,11 +95,8 @@ CREATE TABLE [dbo].[Student](
 	[LastName] [varchar](50) NULL,
 	[FavouriteColour] [varchar](50) NULL,
 	[Active] [bit] NULL,
-	[DateModified] [datetime] NULL
+	[DateModified] [datetime] NOT NULL DEFAULT (GETDATE())
 ) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[Student] ADD  CONSTRAINT [DF_Student_DateModified]  DEFAULT (getdate()) FOR [DateModified]
 GO
 
 ALTER TABLE dbo.Student

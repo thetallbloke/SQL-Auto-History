@@ -37,6 +37,5 @@ BEGIN
         inserted i ON s.id = i.id;
 END;
 
-
 ALTER TABLE [dbo].[Student] ENABLE TRIGGER [trg_Student_Update]
 GO

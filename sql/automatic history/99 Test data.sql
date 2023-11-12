@@ -15,6 +15,18 @@ EXEC usp_Student_GetAtPointInTime @GivenDate = @CurrentDateTime, @Id = 1;
 EXEC usp_Student_GetAtPointInTime @GivenDate = @CurrentDateTime;
 
 /*
+    DROP TABLE audit.StudentHistory;
+    GO
+    DROP TABLE dbo.Student;
+    GO
+    DROP TABLE dbo.sysAutoHistoryTables;
+    GO
+    DROP ROLE WebsiteUser;
+    GO
+    DROP PROCEDURE dbo.SyncHistoryTables
+    GO
+    DROP SCHEMA audit
+    GO
 
 -- Create some test data.
 
