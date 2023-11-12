@@ -5,6 +5,9 @@
     * Need to add code to check for a DateModified field and add if necessary.
     * 
 
+    The basic premise of the script is to loop through the sysAutoHistoryTables table and check if the matching history table infrastructure (fields, triggers, etc) exist.
+    The script would be executed after a deployment to make sure the history tables are up to date.  It wouldn't be executed on a timer or other schedule
+    as it would be expected that the history tables exist and that the audit system is working correctly.
 */
 
 CREATE OR ALTER PROCEDURE SyncHistoryTables
@@ -14,6 +17,7 @@ BEGIN
     DECLARE @BaseTableName NVARCHAR(255);
     DECLARE @HistorySchemaName NVARCHAR(255);
     DECLARE @HistoryTableName NVARCHAR(255);
+    DECLARE @DateModifiedColumn NVARCHAR(255);
     DECLARE @PrimaryKeyName NVARCHAR(255);
     DECLARE @ForeignKeyName NVARCHAR(255);
     DECLARE @ColumnName NVARCHAR(255);
@@ -27,7 +31,8 @@ BEGIN
         BaseTableSchemaName,
         BaseTableName,
         HistorySchemaName,
-        HistoryTableName
+        HistoryTableName,
+        DateModifiedColumn
     FROM
         sysAutoHistoryTables
     WHERE
@@ -35,16 +40,28 @@ BEGIN
 
     OPEN table_cursor;
 
-    FETCH NEXT FROM table_cursor INTO @BaseTableSchemaName, @BaseTableName, @HistorySchemaName, @HistoryTableName;
+    FETCH NEXT FROM table_cursor INTO @BaseTableSchemaName, @BaseTableName, @HistorySchemaName, @HistoryTableName, @DateModifiedColumn;
 
     WHILE @@FETCH_STATUS = 0
     BEGIN
+        -- Check if DateModified column exists.  If it doesn't already exist, create it first.
+        -- The base table must exists already anyway, so we can check it directly.
+        IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @BaseTableSchemaName AND TABLE_NAME = @BaseTableName AND COLUMN_NAME = @DateModifiedColumn)
+        BEGIN
+            -- If DateModified column doesn't exist, create the column
+            SET @strSQL = 'ALTER TABLE ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' ADD ' + QUOTENAME(@DateModifiedColumn) + ' DATETIME';
+                
+            PRINT (@strSQL);
+            EXEC sp_executesql @strSQL;
+        END
+
         -- Check if history table exists
         IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = @HistorySchemaName AND TABLE_NAME = @HistoryTableName)
         BEGIN
             PRINT ('Creating history table ' + @HistorySchemaName + '.' + @HistoryTableName);
 
-            -- Create history table if it doesn't exist
+            -- Create history table if it doesn't exist.  Using the UNION ALL stops IDENTITY attributes of columns being created.  For the history tables, we don't want the IDENTITY attribute because
+            -- it stops us from inserting rows into the history table because the IDENTITY column is likely to be the primary key and we need duplicates in this field in order to match the base table.
 			SET @strSQL = 'SELECT * INTO ' + QUOTENAME(@HistorySchemaName) + '.' + QUOTENAME(@HistoryTableName) + ' FROM ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' WHERE 1 = 0
                            UNION ALL
                            SELECT * FROM ' + QUOTENAME(@BaseTableSchemaName) + '.' + QUOTENAME(@BaseTableName) + ' WHERE 1 = 0;';
@@ -93,7 +110,7 @@ BEGIN
             DEALLOCATE column_cursor;
         END
 
-        FETCH NEXT FROM table_cursor INTO @BaseTableSchemaName, @BaseTableName, @HistorySchemaName, @HistoryTableName;
+        FETCH NEXT FROM table_cursor INTO @BaseTableSchemaName, @BaseTableName, @HistorySchemaName, @HistoryTableName, @DateModifiedColumn;
     END
 
     CLOSE table_cursor;

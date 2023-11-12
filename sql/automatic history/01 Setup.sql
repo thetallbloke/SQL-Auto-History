@@ -45,6 +45,7 @@ CREATE TABLE [dbo].[sysAutoHistoryTables](
 	[BaseTableName] [varchar](255) NOT NULL,
     [HistorySchemaName] [varchar](255) NOT NULL DEFAULT('audit'),
 	[HistoryTableName] [varchar](255) NULL,
+    [DateModifiedColumn] [varchar](255) NOT NULL DEFAULT('DateModified'),
 	[Active] [bit] NULL DEFAULT(1)
  CONSTRAINT [PK_sysAutoHistoryTables] PRIMARY KEY CLUSTERED 
 (
@@ -54,11 +55,10 @@ CREATE TABLE [dbo].[sysAutoHistoryTables](
 GO
 
 /*
-    We will add a record for the Student table that will be created shortly.
+    Here we add a record for the Student table that will be created shortly.
+    This is the POC table that we will be using during the demo.
 */
-INSERT INTO sysAutoHistoryTables (BaseTableSchemaName, BaseTableName, Active)
-VALUES ('dbo', 'Student', 1)
-
+INSERT INTO sysAutoHistoryTables (BaseTableSchemaName, BaseTableName, Active) VALUES ('dbo', 'Student', 1)
 
 /*
     Create a trigger to automatically update the HistoryTableName field when a new row is inserted.
