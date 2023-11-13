@@ -81,4 +81,11 @@ We want to take the responsibility for history away from the developer and put i
 There is still debate if we also need a view of the data that just joins the two tables (in the case of Option 1).  This might be a requirement for the application to use specifically when listing out the changes for a specific record.
 
 ## Now what?
-We'd like feedback on this solution.  Will it work? Suggestions to make it better? Other considerations?
+We'd like feedback on this solution.
+Will it work?
+Suggestions to make it better?
+Other considerations?
+
+Use the discussions.
+
+If you want to contribute, please do.  Raise a PR and we'll review it.
