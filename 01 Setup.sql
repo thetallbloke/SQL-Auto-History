@@ -30,9 +30,9 @@ GO
 /*
     Create a table to store the tables that should have automatic history setup for them.
     These tables will be watched to:
-     1. make sure the history table exists
-     2. make sure the history table has all the correct fields matching the base table
-     3. make sure the history table can be written to by the WebsiteUser role but not updated or deleted
+    1. make sure the history table exists
+    2. make sure the history table has all the correct fields matching the base table
+    3. make sure the history table can be written to by the WebsiteUser role but not updated or deleted
 */
 IF OBJECT_ID('dbo.sysAutoHistoryTables', 'U') IS NOT NULL
 BEGIN
@@ -48,7 +48,7 @@ CREATE TABLE [dbo].[sysAutoHistoryTables](
     [DateModifiedColumn] [varchar](255) NOT NULL DEFAULT('DateModified'),
     [PrimaryKeyColumn] [varchar](255) NOT NULL DEFAULT('Id'),
 	[Active] [bit] NULL DEFAULT(1)
- CONSTRAINT [PK_sysAutoHistoryTables] PRIMARY KEY CLUSTERED 
+CONSTRAINT [PK_sysAutoHistoryTables] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
