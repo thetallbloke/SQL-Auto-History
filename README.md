@@ -16,48 +16,49 @@
 
 ### History Tracking Methodologies
 
-Option 1 -
-	* Insert new record into the base table
-	* Copy the data from the base table to the history table
-	* Update the base table record including the configured DateModified field
-	This method means that we have the base table with the latest version of the data, and the history table with the previous version of the data.
-	This method means that there is no duplication of the current/latest record between base and history table.
+#### Option 1 -
+- Insert new record into the base table
+- Copy the data from the base table to the history table
+- Update the base table record including the configured DateModified field
 
-	Data Extraction - to pull the data out we need to join the base table with the matching history table to get the complete picture
+This method means that we have the base table with the latest version of the data, and the history table with the previous version of the data.  This method means that there is no duplication of the current/latest record between base and history table.
 
-Option 2 -
-	* Insert a record into the base table
-	* Update the configured DateModified field to the current date and time
-	* Immediately copy the data from the base table to the history table
-	This method means that we have the latest/current record in both the base and history table.
+**Data Extraction** - to pull the data out we need to join the base table with the matching history table to get the complete picture
 
+#### Option 2 -
+- Insert a record into the base table
+- Update the configured DateModified field to the current date and time
+- Immediately copy the data from the base table to the history table
 
-	Data Extraction - pull the data from the history table only
+This method means that we have the latest/current record in both the base and history table.
+
+**Data Extraction** - pull the data from the history table only
 
 ## How To Use The Scripts
 
 Create a blank database.  Run the scripts in numeric order; 01, 02, and 03.
 
-01 Setup.sql
-	1. creates an 'audit' schema
-	2. creates a 'WebsiteUser' role
-	3. revokes UPDATE permissions on the 'audit' schema from the 'WebsiteUser' role
-	4. creates a 'sysAutoHistoryTables' table to hold the list of tables that will be automatically audited
-	5. creates a trigger on the sysAutoHistoryTables table to set some default values
-	6. creates a single configuration data row in the table for the POC to handle the [Student] table
-	7. creates a POC [Student] table
+### 01 Setup.sql
+1. creates an 'audit' schema
+2. creates a 'WebsiteUser' role
+3. revokes UPDATE permissions on the 'audit' schema from the 'WebsiteUser' role
+4. creates a 'sysAutoHistoryTables' table to hold the list of tables that will be automatically audited
+5. creates a trigger on the sysAutoHistoryTables table to set some default values
+6. creates a single configuration data row in the table for the POC to handle the [Student] table
+7. creates a POC [Student] table
 
-02 SyncHistoryTables.sql
-	1. creates a stored procedure to sync the table structure of the history tables to match the base tables
+### 02 SyncHistoryTables.sql
+1. creates a stored procedure to sync the table structure of the history tables to match the base tables
 
-03 GenerateHistoryTables.sql
-	Depending on which option you want to use, run the appropriate script; Option 1 or Option 2.
-	1. creates a stored procedure to create the relevant triggers on the base tables to perform the history tracking; Option 1 or Option 2.
-	As part of the sysAutoHistoryTables table, you can specify the name of the schema to use for the history tables.  This is defaulted to 'audit' in the script.
+### 03 GenerateHistoryTables.sql
+Depending on which option you want to use, run the appropriate script; Option 1 or Option 2.
+1. creates a stored procedure to create the relevant triggers on the base tables to perform the history tracking; Option 1 or Option 2.
 
-04 GetAtPointInTime.sql
-	This script is a POC to show how to get the data at a point in time.  Pick the correct script based on the option you chose in step 3.
-	The plan is to create a stored procedure that will do this for you, but for now there is just a script for the current version of the [Student] table.
+As part of the sysAutoHistoryTables table, you can specify the name of the schema to use for the history tables.  This is defaulted to 'audit' in the script.
+
+### 04 GetAtPointInTime.sql
+This script is a POC to show how to get the data at a point in time.  Pick the correct script based on the option you chose in step 3.
+The plan is to create a stored procedure that will do this for you, but for now there is just a script for the current version of the [Student] table.
 
 ## Considerations
 Here are some things to take into consideration given this proposed solution... maybe
