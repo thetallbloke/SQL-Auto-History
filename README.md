@@ -1,5 +1,5 @@
 #### UPDATE :
-For the most up to date version of this solution, see the [sql-temporal-tables](README.md) sub-folder in this repo.
+For the most up to date version of this solution, see the [sql-temporal-tables](/sql-temporal-tables/README.md) sub-folder in this repo.
 While the solution below works, it is much more complicated than using the temporal tables solution.
 If you are using a version of SQL Server prior to version 2016, then continue reading, otherwise use the temporal tables.  I can't think of a reason not to.
 
