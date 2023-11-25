@@ -10,7 +10,7 @@ No need for triggers or additional sprocs or views to get the data you need.
 ### Examples
 
 * Create a new table with system versioning enabled, add some data, and then add a new column to the table.
-	* [create-a-versioned-table.sql](create-a-versioned-table.sql)
+	* [alter-a-versioned-table.sql](alter-a-versioned-table.sql)
 * Delete data from a versioned table.  We may receive a request by someone to delete their personal data which we will need to comply with, or we may need to delete the data because we can only keep it for a certain amount of time.		
 	* [delete-data.sql](delete-data.sql)
 * Create a new table with system versioning enabled, add some data, and then select the data from the table at a specific point in time.
